@@ -1,8 +1,8 @@
-import { Command } from './command';
+import { Command } from './command'
 
 export class RestCommand extends Command {
-  constructor() {
-    super();
-    this.command = 'REST';
+  constructor () {
+    super()
+    this.command = 'REST'
   }
 }

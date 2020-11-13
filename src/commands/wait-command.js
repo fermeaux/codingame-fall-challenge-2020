@@ -1,8 +1,8 @@
-import { Command } from './command';
+import { Command } from './command'
 
 export class WaitCommand extends Command {
-  constructor() {
-    super();
-    this.command = 'WAIT';
+  constructor () {
+    super()
+    this.command = 'WAIT'
   }
 }

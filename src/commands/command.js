@@ -1,5 +1,5 @@
 export class Command {
-  apply() {
-    console.log(this.command);
+  apply () {
+    console.log(this.command)
   }
 }

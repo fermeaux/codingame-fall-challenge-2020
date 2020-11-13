@@ -1,8 +1,8 @@
-import { Command } from './command';
+import { Command } from './command'
 
 export class LearnCommand extends Command {
-  constructor(id) {
-    super();
-    this.command = `LEARN ${id}`;
+  constructor (id) {
+    super()
+    this.command = `LEARN ${id}`
   }
 }
