@@ -1,0 +1,25 @@
+{
+  "name": "codingame-fall-challenge-2020",
+  "version": "1.0.0",
+  "description": "",
+  "main": "fall-challenge.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "rollup -c",
+    "copy-code": "cat dist/bundle.js | clip",
+    "codingame": "npm run build && npm run copy-code"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com-perso:fermeaux/codingame-fall-challenge-2020.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@babel/core": "^7.12.3",
+    "rollup": "^2.33.1",
+    "rollup-plugin-babel": "^4.4.0",
+    "rollup-plugin-commonjs": "^10.1.0",
+    "rollup-plugin-node-resolve": "^5.2.0"
+  }
+}

@@ -1,3 +1,11 @@
+import {
+  BrewCommand,
+  CastCommand,
+  LearnCommand,
+  RestCommand,
+  WaitCommand,
+} from './commands';
+
 class Action {
   constructor(inputs) {
     this.id = parseInt(inputs[0]); // the unique ID of this spell or recipe
@@ -111,40 +119,6 @@ class Player {
 
   parse() {
     this.spells.forEach((spell) => spell.parse(this));
-  }
-}
-
-class Command {
-  apply() {
-    console.log(this.command);
-  }
-}
-
-class WaitCommand extends Command {
-  constructor() {
-    super();
-    this.command = 'WAIT';
-  }
-}
-
-class BrewCommand extends Command {
-  constructor(id) {
-    super();
-    this.command = `BREW ${id}`;
-  }
-}
-
-class CastCommand extends Command {
-  constructor(id) {
-    super();
-    this.command = `CAST ${id}`;
-  }
-}
-
-class RestCommand extends Command {
-  constructor() {
-    super();
-    this.command = 'REST';
   }
 }
 
