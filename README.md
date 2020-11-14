@@ -20,3 +20,5 @@ Maintenant Lorsque vous modifiez un des fichiers dans `src/**/*`, Codingame reç
 Autrement vous pouvez aussi lancer la commande `npm run codingame`.
 Vous aurez dans votre presse papier la dernière version de votre application.
 Vous pouvez maintenant coller la nouvelle version dans l'éditeur de Codingame
+
+Usefull emojis for commit messages : 🧪🧱⚙️🚀💡📝
