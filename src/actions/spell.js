@@ -10,42 +10,23 @@ export class Spell extends Action {
     this.repeatable = inputs[10] !== '0' // for the first two leagues: always 0; later: 1 if this is a repeatable player spell
   }
 
-  parse (player) {
-    super.parse()
-    this.nbRupees = this.deltas.reduce((prev, current) => {
-      return prev + current
-    }, 0)
-    this.playable =
-      this.isPlayableBy(player) &&
-      this.castable &&
-      player.nbRupees + this.nbRupees <= 10
-  }
-
   apply () {
     super.apply()
     if (this.type === 'CAST') new CastCommand(this.id).apply()
   }
 
   isUsefull (recipe) {
-    const firstPositiveValue = this.deltas.reduce((prev, current, index) => {
-      return prev < 0 && current > 0 ? index : prev
-    }, -1)
-    return (
-      firstPositiveValue >= 0 && firstPositiveValue <= recipe.lastIndexMissing
-    )
+    const firstPositive = this.deltas.firstPositive()
+    return firstPositive >= 0 && firstPositive <= recipe.lastIndexMissing
   }
 
   isNeeded (recipe) {
     let isNeeded = false
-    this.deltas.forEach((delta, index) => {
+    this.deltas.rupees.forEach((delta, index) => {
       if (delta > 0 && recipe.missing[index] < 0) {
         isNeeded = true
       }
     })
     return isNeeded
-  }
-
-  isPlayableBy (player) {
-    return this.deltas.every((delta, index) => player.inv[index] + delta >= 0)
   }
 }
