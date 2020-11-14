@@ -14,7 +14,9 @@ export class Rupees {
   }
 
   lastNegative () {
-    return this.rupees.findLastIndex(rupee => rupee < 0)
+    return this.rupees.reduce((prev, current, index) => {
+      return current < 0 ? index : prev
+    }, -1)
   }
 
   get (index) {

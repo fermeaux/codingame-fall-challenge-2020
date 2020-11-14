@@ -25,9 +25,9 @@ export class Main {
   }
 
   process () {
-    this.processRecipe()
-    if (this.selectedAction) return
-    this.processSpell()
+    // this.processRecipe()
+    // if (this.selectedAction) return
+    // this.processSpell()
   }
 
   processRecipe () {
