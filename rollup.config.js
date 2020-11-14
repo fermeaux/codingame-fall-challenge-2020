@@ -1,26 +1,21 @@
-import babel from 'rollup-plugin-babel';
-import resolve from 'rollup-plugin-node-resolve';
-import commonjs from 'rollup-plugin-commonjs';
-
-const extensions = ['.js'];
+import babel from 'rollup-plugin-babel'
+import resolve from 'rollup-plugin-node-resolve'
+import commonjs from 'rollup-plugin-commonjs'
 
 export default [
   {
     input: 'src/index.js',
+    watch: {
+      include: 'src/**/*'
+    },
     output: {
       file: 'dist/bundle.js',
-      format: 'cjs',
+      format: 'cjs'
     },
     plugins: [
-      resolve({
-        mainFields: ['module', 'main', 'jsnext:main', 'browser'],
-        extensions,
-      }),
+      resolve(),
       commonjs(),
-      babel({
-        exclude: './node_modules/**',
-        extensions,
-      }),
-    ],
-  },
-];
+      babel()
+    ]
+  }
+]

@@ -4,6 +4,7 @@
   "description": "",
   "main": "fall-challenge.js",
   "scripts": {
+    "start": "rollup -cw",
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "rollup -c",
     "copy-code": "cat dist/bundle.js | clip",
