@@ -5,7 +5,7 @@
   "main": "fall-challenge.js",
   "scripts": {
     "start": "rollup -cw",
-    "test": "ava",
+    "test": "ava -w",
     "build": "rollup -c",
     "copy-code": "cat dist/bundle.js | clip",
     "codingame": "npm run build && npm run copy-code"
@@ -28,12 +28,16 @@
     "eslint-plugin-import": "^2.22.1",
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-promise": "^4.2.1",
+    "esm": "^3.2.25",
     "rollup": "^2.33.1",
     "rollup-plugin-babel": "^4.4.0",
     "rollup-plugin-commonjs": "^10.1.0",
     "rollup-plugin-node-resolve": "^5.2.0"
   },
   "ava": {
+    "require": [
+      "esm"
+    ],
     "babel": true
   }
 }
