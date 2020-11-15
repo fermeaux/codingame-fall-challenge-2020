@@ -1,4 +1,4 @@
-import { Rupees } from '../others'
+import { Rupees } from './rupees'
 
 export class Player {
   constructor (inputs, spells) {

@@ -1,5 +1,5 @@
 import test from 'ava'
-import { Rupees } from '../../src/others'
+import { Rupees } from '../../src/others/rupees'
 
 test('Rupees#count works with positive values', t => {
   const rupees = new Rupees([1, 2, 3, 4])

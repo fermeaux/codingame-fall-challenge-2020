@@ -2,7 +2,7 @@
 
 import { ActionFactory } from '../actions'
 import { RestCommand } from '../commands'
-import { Player } from '../player'
+import { Player } from './player'
 
 export class Main {
   readLines () {

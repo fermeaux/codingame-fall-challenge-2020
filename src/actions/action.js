@@ -1,4 +1,4 @@
-import { Rupees } from '../others'
+import { Rupees } from '../others/rupees'
 
 export class Action {
   constructor (inputs) {

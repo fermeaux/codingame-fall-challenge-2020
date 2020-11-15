@@ -1,4 +1,4 @@
-import { Main } from './main'
+import { Main } from './others/main'
 
 while (true) {
   const main = new Main()
