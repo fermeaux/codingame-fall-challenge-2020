@@ -14,8 +14,4 @@ export class Recipe extends Action {
   score () {
     return this.price / this.deltas.score()
   }
-
-  need (ingredientIndex) {
-    return this.deltas.get(ingredientIndex) < 0
-  }
 }

@@ -40,24 +40,3 @@ test('Ingredients#score works with negative values', t => {
   const ingredients = new Ingredients([1, 2, 3, -4])
   t.is(ingredients.score(), -3)
 })
-
-test('Ingredients#fillMissingWith works with more values', t => {
-  const ingredients = new Ingredients([-1, 0, -2, -1])
-  const other = new Ingredients([3, 0, 0, 0])
-  const res = ingredients.fillMissingWith(other)
-  t.deepEqual(res.ingredients, [0, 0, -2, -1])
-})
-
-test('Ingredients#fillMissingWith works with less values', t => {
-  const ingredients = new Ingredients([-1, 0, -2, -1])
-  const other = new Ingredients([0, 0, 1, 0])
-  const res = ingredients.fillMissingWith(other)
-  t.deepEqual(res.ingredients, [-1, 0, -1, -1])
-})
-
-test('Ingredients#fillMissingWith works with too much values', t => {
-  const ingredients = new Ingredients([-1, 0, -2, -1])
-  const other = new Ingredients([4, 4, 4, 4])
-  const res = ingredients.fillMissingWith(other)
-  t.deepEqual(res.ingredients, [0, 0, 0, 0])
-})

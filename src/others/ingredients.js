@@ -30,12 +30,4 @@ export class Ingredients {
       return prev + current * INGREDIENTS[index]
     }, 0)
   }
-
-  fillMissingWith (other) {
-    const deltas = this.ingredients.map((ingredient, index) => {
-      const missing = other.get(index) + ingredient
-      return missing > 0 ? 0 : missing
-    })
-    return new Ingredients(deltas)
-  }
 }

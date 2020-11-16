@@ -24,20 +24,6 @@ export function computeRestTime (ingredients) {
   }, 0)
 }
 
-// export function fillMissingIngredientsWith (input, output) {
-//   input.ingredients.forEach((inputIngredient, index) => {
-//     const outputIngredient = output.get(index)
-//     let delta = inputIngredient + outputIngredient
-//     if (delta > 0) {
-//       input.ingredients[index] = input.ingredients[index] - delta
-//       delta = 0
-//     } else {
-//       input.ingredients[index] = 0
-//     }
-//     output.ingredients[index] = delta
-//   })
-// }
-
 export function fillMissingIngredientsWith (input, output) {
   output.ingredients = input.ingredients.map((inputIngredient, index) => {
     const delta = inputIngredient + output.get(index)

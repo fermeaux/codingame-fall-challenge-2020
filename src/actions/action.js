@@ -15,7 +15,5 @@ export class Action {
 
   apply () {}
 
-  score () {
-    return this.deltas.score()
-  }
+  score () {}
 }

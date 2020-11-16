@@ -1,7 +1,6 @@
 /* global readline */
 
 import { ActionFactory } from '../actions'
-// import { RestCommand } from '../commands'
 import { Resolver } from '../resolvers/resolver'
 import { Player } from './player'
 
@@ -27,41 +26,5 @@ export class Main {
 
   process () {
     new Resolver({ player: this.me, tomes: this.spellShop, recipes: this.recipes }).resolve()
-    // this.processRecipe()
-    // if (this.selectedAction) return
-    // this.processSpell()
   }
-
-  // processRecipe () {
-  //   this.selectedAction = null
-  //   this.targetRecipe = null
-  //   this.recipes.forEach((recipe) => {
-  //     if (
-  //       recipe.playable &&
-  //       (!this.selectedAction || recipe.price > this.selectedAction.price)
-  //     ) {
-  //       this.selectedAction = recipe
-  //     }
-  //     if (!this.targetRecipe || this.targetRecipe.score > recipe.score) {
-  //       this.targetRecipe = recipe
-  //     }
-  //   })
-  // }
-
-  // processSpell () {
-  //   this.me.spells.forEach((spell) => {
-  //     if (
-  //       this.me.canCast(spell) &&
-  //       spell.isUsefull(this.targetRecipe) &&
-  //       (!this.selectedAction || spell.isNeeded(this.targetRecipe))
-  //     ) {
-  //       this.selectedAction = spell
-  //     }
-  //   })
-  // }
-
-  // apply () {
-  //   if (!this.selectedAction) return new RestCommand().apply()
-  //   this.selectedAction.apply()
-  // }
 }

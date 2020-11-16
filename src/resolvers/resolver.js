@@ -18,25 +18,7 @@ export class Resolver {
       this.findBestAction()
     }
     this.bestAction.apply()
-  }
-
-  seekAvailableActions () {
-    this.availableActions = []
-    let restHasBeenCount = false
-    this.player.spells.forEach(spell => {
-      if (this.player.canCast(spell) && spell.isNeeded(this.bestRecipe)) {
-        this.availableActions.push(spell)
-      } else if (!restHasBeenCount) {
-        restHasBeenCount = true
-        this.availableActions.push(new Rest())
-      }
-    })
-    this.tomes.forEach(tome => {
-      if (this.player.canLearn(tome) && tome.isNeeded(this.bestRecipe)) {
-        this.availableActions.push(tome)
-      }
-    })
-    console.error(this.bestRecipe)
+    this.log()
   }
 
   findBestRecipe () {
@@ -52,9 +34,25 @@ export class Resolver {
   }
 
   prefill () {
-    console.error(this.player.inv, this.bestRecipe.deltas)
     fillMissingIngredientsWith(this.player.inv, this.bestRecipe.deltas)
-    console.error(this.bestRecipe.deltas)
+  }
+
+  seekAvailableActions () {
+    this.availableActions = []
+    let restHasBeenCount = false
+    this.player.spells.forEach(spell => {
+      if (this.player.canCast(spell) && spell.isUsefull(this.bestRecipe)) {
+        this.availableActions.push(spell)
+      } else if (!restHasBeenCount) {
+        restHasBeenCount = true
+        this.availableActions.push(new Rest())
+      }
+    })
+    this.tomes.forEach(tome => {
+      if (this.player.canLearn(tome) && tome.isUsefull(this.bestRecipe)) {
+        this.availableActions.push(tome)
+      }
+    })
   }
 
   findBestAction () {
@@ -67,5 +65,10 @@ export class Resolver {
         bestScore = actionScore
       }
     })
+  }
+
+  log () {
+    console.error('actions : ', this.availableActions)
+    console.error('bestAction : ', this.bestAction)
   }
 }

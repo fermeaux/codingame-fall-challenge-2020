@@ -14,19 +14,7 @@ export class Spell extends Action {
 
   isUsefull (recipe) {
     const firstPositive = this.deltas.firstPositive()
-    return firstPositive >= 0 && firstPositive <= recipe.lastIndexMissing
-  }
-
-  isNeeded (recipe) {
-    let isNeeded = false
-    let positiveValue = false
-    this.deltas.ingredients.forEach((delta, index) => {
-      if (delta > 0) positiveValue = true
-      if (positiveValue && recipe.deltas.get(index) < 0) {
-        isNeeded = true
-      }
-    })
-    return isNeeded
+    return firstPositive >= 0 && firstPositive <= recipe.deltas.lastNegative()
   }
 
   score () {
