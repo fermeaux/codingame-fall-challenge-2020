@@ -1,8 +1,8 @@
-import { Rupees } from './rupees'
+import { Ingredients } from './ingredients'
 
 export class Player {
   constructor (inputs, spells) {
-    this.inv = new Rupees([
+    this.inv = new Ingredients([
       parseInt(inputs[0]),
       parseInt(inputs[1]),
       parseInt(inputs[2]),
@@ -14,14 +14,24 @@ export class Player {
   }
 
   canCast (spell) {
-    return this.hasEnoughRupees(spell) && this.hasEnoughSpace(spell) && spell.castable
+    return (this.hasEnoughIngredients(spell.deltas.ingredients) &&
+            this.hasEnoughSpace(spell.deltas) &&
+            spell.castable)
   }
 
-  hasEnoughRupees (spell) {
-    return spell.deltas.every((delta, index) => this.inv[index] + delta >= 0)
+  canLearn (tome) {
+    return this.hasEnoughIngredients([-tome.tomeIndex, 0, 0, 0])
   }
 
-  hasEnoughSpace (spell) {
-    return this.nbRupees + spell.nbRupees <= this.maxRupees
+  canBrew (recipe) {
+    return this.hasEnoughIngredients(recipe.deltas.ingredients)
+  }
+
+  hasEnoughIngredients (ingredients) {
+    return ingredients.every((ingredient, index) => this.inv.get(index) + ingredient >= 0)
+  }
+
+  hasEnoughSpace (ingredients) {
+    return this.inv.count() + ingredients.count() <= this.inv.maxCount
   }
 }

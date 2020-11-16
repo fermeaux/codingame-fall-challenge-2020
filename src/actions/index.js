@@ -1,3 +1,5 @@
 export * from './factory'
 export * from './recipe'
+export * from './rest'
 export * from './spell'
+export * from './tome-spell'
