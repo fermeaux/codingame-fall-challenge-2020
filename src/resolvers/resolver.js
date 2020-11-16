@@ -6,19 +6,30 @@ export class Resolver {
     this.player = player
     this.recipes = recipes
     this.tomes = tomes
+    this.restAction = new Rest()
   }
 
   resolve () {
-    this.findBestRecipe()
-    if (this.player.canBrew(this.bestRecipe)) {
-      this.bestAction = this.bestRecipe
+    this.brewIfPossible()
+    if (this.brewAction) {
+      this.bestAction = this.brewAction
     } else {
+      this.findBestRecipe()
       this.prefill()
       this.seekAvailableActions()
       this.findBestAction()
     }
     this.bestAction.apply()
     this.log()
+  }
+
+  brewIfPossible () {
+    this.brewAction = null
+    this.recipes.forEach(recipe => {
+      if (this.player.canBrew(recipe)) {
+        this.brewAction = recipe
+      }
+    })
   }
 
   findBestRecipe () {
@@ -39,18 +50,14 @@ export class Resolver {
 
   seekAvailableActions () {
     this.availableActions = []
-    let restHasBeenCount = false
-    this.player.spells.forEach(spell => {
-      if (this.player.canCast(spell) && spell.isUsefull(this.bestRecipe)) {
-        this.availableActions.push(spell)
-      } else if (!restHasBeenCount) {
-        restHasBeenCount = true
-        this.availableActions.push(new Rest())
-      }
-    })
     this.tomes.forEach(tome => {
       if (this.player.canLearn(tome) && tome.isUsefull(this.bestRecipe)) {
         this.availableActions.push(tome)
+      }
+    })
+    this.player.spells.forEach(spell => {
+      if (this.player.canCast(spell) && spell.isUsefull(this.bestRecipe)) {
+        this.availableActions.push(spell)
       }
     })
   }
@@ -65,10 +72,17 @@ export class Resolver {
         bestScore = actionScore
       }
     })
+    if (!this.bestAction || this.restAction.score(this) > bestScore) {
+      this.bestAction = this.restAction
+    }
   }
 
   log () {
-    console.error('actions : ', this.availableActions)
-    console.error('bestAction : ', this.bestAction)
+    if (this.availableActions) {
+      const actionsFormated = this.availableActions.map((action) => ({ id: action.id, score: action.score(this), type: action.type }))
+      actionsFormated.push({ score: this.restAction.score(this), type: this.restAction.type })
+      console.error('actions : ', actionsFormated)
+    }
+    console.error('bestAction : ', this.bestAction, this.bestAction.score(this))
   }
 }
