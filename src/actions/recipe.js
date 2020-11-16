@@ -12,8 +12,8 @@ export class Recipe extends Action {
   }
 
   score () {
-    const ingredientsScore = this.deltas.score()
+    const ingredientsScore = -this.deltas.score()
     if (ingredientsScore === 0) return 10
-    return this.price / -ingredientsScore
+    return (this.price / ingredientsScore) * (1 / (this.deltas.count() - 1))
   }
 }

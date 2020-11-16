@@ -13,8 +13,8 @@ export class TomeSpell extends Spell {
     new LearnCommand(this.id).apply()
   }
 
-  score () {
-    const ingredientsScore = this.deltas.score()
+  score (ctx) {
+    const ingredientsScore = super.score(ctx)
     const taxIncome = this.taxCount * INGREDIENTS[0]
     const taxOutcome = this.tomeIndex * INGREDIENTS[0]
     return -1 + ingredientsScore + taxIncome - taxOutcome

@@ -1,5 +1,6 @@
 import { Action } from './action'
 import { CastCommand } from '../commands'
+import { INGREDIENTS } from '../others/currency'
 
 export class Spell extends Action {
   constructor (inputs) {
@@ -17,7 +18,10 @@ export class Spell extends Action {
     return firstPositive >= 0 && firstPositive <= recipe.deltas.lastNegative()
   }
 
-  score () {
-    return this.deltas.score()
+  score ({ bestRecipe }) {
+    return bestRecipe.deltas.ingredients.reduce((prev, current, index) => {
+      const spellIng = this.deltas.ingredients[index]
+      return prev + (spellIng + current > 0 ? -current : spellIng) * INGREDIENTS[index]
+    }, 0)
   }
 }
