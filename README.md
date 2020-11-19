@@ -23,22 +23,25 @@ Vous pouvez maintenant coller la nouvelle version dans l'éditeur de Codingame
 
 Usefull emojis for commit messages : 🧪🧱⚙️🚀💡📝🧽🔥💨
 
-## Todos
+1) pay
+2) earn
+3) clean
 
-- Ajouter une méthode au joueur `scoreOf` qui permet de calculer le score en fonction de son inventaire.
-- Ajouter une méthode au joueur `scoreOfSpellFor` qui permet de calculer le score du spell en fonction de son inventaire et de la recette.
-- Améliorer le calcul du score des actions en comptant le temps de repos
-- Coder le processus pour déterminer l'action à réaliser
-
-## Processus de résolution
-
-- je boucle sur les recettes
-    - je calcule les ingrédients qu'il reste à obtenir en fonction de l'inventaire du joueur
-    - je stocke le score des recettes en fonction de l'inventaire du joueur
-    - s'il n'y a pas d'ingrédient manquant je sélectionne la commande BREW
-    - je boucle sur les sorts du joueur
-        - je stocke le score des sorts en fonction des ingrédients qu'il reste à obtenir pour la recette et de l'inventaire du joueur
-    - je boucle sur les sorts à apprendre
-        - je stocke le score des sorts en fonction des ingrédients qu'il reste à obtenir pour la recette et de l'inventaire du joueur
-    - je sélectionne le sort qui a le meilleur score pour les recettes
-- je sélectionne l'action final à effectuer en fonction du score des recettes et de l'action à mettre en place 
+- Cast
+    - 1) Donner les ingrédients
+    - 2) Récupérer les ingrédients
+    - 3) Rendre le sort inutilisable
+- Learn
+    - 1) Payer la taxe
+    - 2) Récupérer le tome
+    - 2) Récupérer la taxe du tome
+    - 3) Supprimer le tome
+    - 3) Ajouter un tome random
+    - 3 bis) Distribuer la taxe
+- Rest
+    - 2) Rendre tous les sorts utilisables
+- Brew
+    - 1) Donner les ingrédients
+    - 2) Récupérer le score
+    - 3) Retirer le client
+    - 3) Ajouter un client random

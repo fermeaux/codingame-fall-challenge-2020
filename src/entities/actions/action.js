@@ -3,5 +3,9 @@ export class Action {
     this.type = type
   }
 
-  apply () {}
+  apply () {
+    console.log(this.type)
+  }
+
+  simulate () {}
 }

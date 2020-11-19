@@ -5,4 +5,10 @@ export class Brew extends RecipeAction {
     super(inputs)
     this.price = parseInt(inputs[6]) // the price in rupees if this is a potion
   }
+
+  simulate (player) {
+    player.inv.substract(this.deltas.ingredients)
+    player.score += this.price
+    this.brewed = true
+  }
 }

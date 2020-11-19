@@ -1,4 +1,4 @@
-import { Rest } from './actions'
+import { Rest, Wait } from './actions'
 import { Recipe } from './recipe'
 
 export class Player {
@@ -16,6 +16,7 @@ export class Player {
 
   seekAvailableActions ({ clients, tomes }) {
     return [
+      new Wait(),
       ...this.seekAvailableCasts(),
       ...this.seekAvailableLearns(tomes),
       ...this.seekAvailableBrews(clients),
@@ -45,17 +46,15 @@ export class Player {
   }
 
   generateRepeatableCast (template, nbTime) {
-    console.error(template)
-    return {
-      ...template,
-      nbTime,
-      deltas: new Recipe(template.deltas.ingredients.map(ingredient => ingredient * nbTime))
-    }
+    const clone = Object.assign(Object.create(Object.getPrototypeOf(template)), template)
+    clone.nbTime = nbTime
+    clone.deltas.ingredients = clone.deltas.ingredients.map(ingredient => ingredient * nbTime)
+    return clone
   }
 
   seekAvailableLearns (tomes) {
     return tomes.reduce((availableTomes, tome) => {
-      if (this.canCast(tome)) {
+      if (this.canLearn(tome)) {
         availableTomes.push(tome)
       }
       return availableTomes

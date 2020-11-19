@@ -5,7 +5,9 @@ export class Rest extends Action {
     super('REST')
   }
 
-  apply () {
-    console.log(this.type)
+  simulate (player) {
+    player.spells.forEach((spell) => {
+      spell.castable = true
+    })
   }
 }

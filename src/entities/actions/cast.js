@@ -11,4 +11,10 @@ export class Cast extends RecipeAction {
   apply () {
     console.log(`${this.type} ${this.id} ${this.nbTime}`)
   }
+
+  simulate (player) {
+    player.inv.substract(this.deltas.ingredients)
+    player.inv.add(this.deltas.ingredients)
+    this.castable = false
+  }
 }
