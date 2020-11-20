@@ -1,3 +1,4 @@
+import { cloneObj } from '../services/utils'
 import { Rest, Wait } from './actions'
 import { Recipe } from './recipe'
 
@@ -12,28 +13,26 @@ export class Player {
     this.inv.maxCount = 10
     this.score = parseInt(inputs[4]) // amount of rupees
     this.spells = spells
+    this.nbClientDone = 0
   }
 
   seekAvailableActions ({ clients, tomes }) {
     return [
-      new Wait(),
       ...this.seekAvailableCasts(),
       ...this.seekAvailableLearns(tomes),
       ...this.seekAvailableBrews(clients),
-      ...this.seekAvailableRest()
+      ...this.seekAvailableRest(),
+      new Wait()
     ]
   }
 
   seekAvailableCasts () {
     return this.spells.reduce((availableCasts, spell) => {
-      let currentSpell = spell
+      let currentSpell = this.generateRepeatableCast(spell, 1)
       for (let i = 1; currentSpell && this.canCast(currentSpell); i++) {
         availableCasts.push(currentSpell)
-        if (currentSpell.repeatable) {
-          currentSpell = this.generateRepeatableCast(spell, i)
-        } else {
-          currentSpell = undefined
-        }
+        if (currentSpell.repeatable) currentSpell = this.generateRepeatableCast(spell, i)
+        else currentSpell = undefined
       }
       return availableCasts
     }, [])
@@ -46,8 +45,9 @@ export class Player {
   }
 
   generateRepeatableCast (template, nbTime) {
-    const clone = Object.assign(Object.create(Object.getPrototypeOf(template)), template)
+    const clone = cloneObj(template)
     clone.nbTime = nbTime
+    clone.deltas = cloneObj(clone.deltas)
     clone.deltas.ingredients = clone.deltas.ingredients.map(ingredient => ingredient * nbTime)
     return clone
   }
@@ -80,9 +80,7 @@ export class Player {
 
   seekAvailableRest () {
     for (let i = 0; i < this.spells.length; i++) {
-      if (!this.spells[i].castable) {
-        return [new Rest()]
-      }
+      if (!this.spells[i].castable) return [new Rest()]
     }
     return []
   }
@@ -93,5 +91,9 @@ export class Player {
 
   hasEnoughSpace (recipe) {
     return this.inv.count() + recipe.count() <= this.inv.maxCount
+  }
+
+  getScore () {
+    return this.score + this.inv.ingredients.reduce((prev, current, index) => prev + (index > 0 ? current : 0), 0)
   }
 }

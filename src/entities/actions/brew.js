@@ -10,5 +10,6 @@ export class Brew extends RecipeAction {
     player.inv.substract(this.deltas.ingredients)
     player.score += this.price
     this.brewed = true
+    player.nbClientDone++
   }
 }

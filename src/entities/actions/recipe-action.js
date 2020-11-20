@@ -14,6 +14,7 @@ export class RecipeAction extends Action {
   }
 
   apply () {
+    console.error(`${this.type} ${this.id}`)
     console.log(`${this.type} ${this.id}`)
   }
 }

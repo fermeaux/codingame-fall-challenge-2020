@@ -9,6 +9,7 @@ export class Cast extends RecipeAction {
   }
 
   apply () {
+    console.error(`${this.type} ${this.id} ${this.nbTime}`)
     console.log(`${this.type} ${this.id} ${this.nbTime}`)
   }
 

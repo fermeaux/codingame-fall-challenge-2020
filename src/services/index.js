@@ -1,3 +1,5 @@
 export * from './database.js'
+export * from './global-state.js'
 export * from './parser'
 export * from './resolver'
+export * from './utils'

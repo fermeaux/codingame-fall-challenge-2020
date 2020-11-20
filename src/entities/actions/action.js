@@ -4,6 +4,7 @@ export class Action {
   }
 
   apply () {
+    console.error(this.type)
     console.log(this.type)
   }
 

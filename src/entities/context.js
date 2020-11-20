@@ -1,38 +1,15 @@
 import { database } from '../services/database'
+import { globalState } from '../services/global-state'
+import { cloneObj } from '../services/utils'
 
 export class Context {
-  constructor ({ me, you, clients, tomes, parent }) {
+  constructor ({ me, you, clients, tomes }) {
     this.me = me
     this.you = you
     this.clients = clients
     this.tomes = tomes
-    this.parent = parent
-  }
-
-  seekPaths () {
-    const myActions = this.me.seekAvailableActions(this)
-    const yourActions = this.you.seekAvailableActions(this)
-    this.createChildren(myActions, yourActions)
-    return this.children
-  }
-
-  createChildren (myActions, yourActions) {
-    this.children = myActions.reduce((prev, myAction) => {
-      yourActions.forEach(yourAction => prev.push(this.cloneWithActions(myAction, yourAction)))
-      return prev
-    }, [])
-  }
-
-  cloneWithActions (myAction, yourAction) {
-    const clone = Object.assign(Object.create(Object.getPrototypeOf(this)), this)
-    clone.myAction = myAction
-    clone.yourAction = yourAction
-    clone.me = Object.assign(Object.create(Object.getPrototypeOf(this.me)), this.me)
-    clone.me.spells = Object.assign(Object.create(Object.getPrototypeOf(this.me.spells)), this.me.spells)
-    clone.you = Object.assign(Object.create(Object.getPrototypeOf(this.you)), this.you)
-    clone.you.spells = Object.assign(Object.create(Object.getPrototypeOf(this.you.spells)), this.you.spells)
-    clone.parent = this
-    return clone
+    this.nbTurn = globalState.turn
+    this.winRate = 0
   }
 
   simulate () {
@@ -40,6 +17,8 @@ export class Context {
     this.yourAction.simulate(this.you)
     this.replaceClients()
     this.replaceTomes()
+    this.seekPaths()
+    this.computeWinRate()
   }
 
   replaceClients () {
@@ -66,5 +45,60 @@ export class Context {
       if (myTax > i) this.tomes[i].taxCount += 1
       if (yourTax > i) this.tomes[i].taxCount += 1
     }
+  }
+
+  seekPaths () {
+    if (this.isEnd()) {
+      console.error('found end game')
+      this.children = []
+      globalState.finalPaths.push(this)
+      return
+    }
+    const myActions = this.me.seekAvailableActions(this)
+    const yourActions = this.you.seekAvailableActions(this)
+    this.createChildren(myActions, yourActions)
+  }
+
+  createChildren (myActions, yourActions) {
+    this.children = myActions.reduce((prev, myAction) => {
+      yourActions.forEach(yourAction => prev.push(this.cloneWithActions(myAction, yourAction)))
+      return prev
+    }, [])
+  }
+
+  cloneWithActions (myAction, yourAction) {
+    const clone = cloneObj(this)
+    clone.myAction = myAction
+    clone.yourAction = yourAction
+    clone.me = cloneObj(this.me)
+    clone.me.spells = cloneObj(this.me.spells)
+    clone.you = cloneObj(this.you)
+    clone.you.spells = cloneObj(this.you.spells)
+    clone.parent = this
+    clone.nbTurn++
+    return clone
+  }
+
+  computeWinRate () {
+    const myScore = this.me.getScore()
+    const yourScore = this.you.getScore()
+    const isEnd = this.isEnd()
+    if (myScore > yourScore && isEnd) this.winRate = 1
+    else if (myScore > yourScore) this.winRate = 0.75
+    else if (myScore === yourScore) this.winRate = 0.5
+    else if (myScore < yourScore) this.winRate = 0.25
+    else if (myScore < yourScore && isEnd) this.winRate = 0
+  }
+
+  isEnd () {
+    return this.me.nbClientDone >= 6 || this.you.nbClientDone >= 6 || globalState.nbTurn === 100
+  }
+
+  getRoot () {
+    let root = this
+    while (root.nbTurn > globalState.turn + 1) {
+      root = root.parent
+    }
+    return root
   }
 }
