@@ -45,9 +45,8 @@ export class Player {
   }
 
   generateRepeatableCast (template, nbTime) {
-    const clone = cloneObj(template)
+    const clone = template.clone()
     clone.nbTime = nbTime
-    clone.deltas = cloneObj(clone.deltas)
     clone.deltas.ingredients = clone.deltas.ingredients.map(ingredient => ingredient * nbTime)
     return clone
   }
@@ -95,5 +94,12 @@ export class Player {
 
   getScore () {
     return this.score + this.inv.ingredients.reduce((prev, current, index) => prev + (index > 0 ? current : 0), 0)
+  }
+
+  clone () {
+    const clone = cloneObj(this)
+    clone.inv = this.inv.clone()
+    clone.spells = this.spells.map(spell => spell.clone())
+    return clone
   }
 }

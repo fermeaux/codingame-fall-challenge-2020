@@ -1,3 +1,4 @@
+import { cloneObj } from '../../services/utils'
 import { RecipeAction } from './recipe-action'
 
 export class Brew extends RecipeAction {
@@ -11,5 +12,11 @@ export class Brew extends RecipeAction {
     player.score += this.price
     this.brewed = true
     player.nbClientDone++
+  }
+
+  clone () {
+    const clone = cloneObj(this)
+    clone.deltas = this.deltas.clone()
+    return clone
   }
 }

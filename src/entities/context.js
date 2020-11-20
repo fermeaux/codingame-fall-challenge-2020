@@ -67,13 +67,9 @@ export class Context {
   }
 
   cloneWithActions (myAction, yourAction) {
-    const clone = cloneObj(this)
+    const clone = this.clone()
     clone.myAction = myAction
     clone.yourAction = yourAction
-    clone.me = cloneObj(this.me)
-    clone.me.spells = cloneObj(this.me.spells)
-    clone.you = cloneObj(this.you)
-    clone.you.spells = cloneObj(this.you.spells)
     clone.parent = this
     clone.nbTurn++
     return clone
@@ -100,5 +96,14 @@ export class Context {
       root = root.parent
     }
     return root
+  }
+
+  clone () {
+    const clone = cloneObj(this)
+    clone.me = this.me.clone()
+    clone.you = this.you.clone()
+    clone.clients = this.clients.clone()
+    clone.tomes = this.tomes.clone()
+    return clone
   }
 }

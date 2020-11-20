@@ -1,3 +1,4 @@
+import { cloneObj } from '../../services/utils'
 import { RecipeAction } from './recipe-action'
 
 export class Cast extends RecipeAction {
@@ -17,5 +18,11 @@ export class Cast extends RecipeAction {
     player.inv.substract(this.deltas.ingredients)
     player.inv.add(this.deltas.ingredients)
     this.castable = false
+  }
+
+  clone () {
+    const clone = cloneObj(this)
+    clone.deltas = this.deltas.clone()
+    return clone
   }
 }

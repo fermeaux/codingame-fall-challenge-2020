@@ -1,3 +1,4 @@
+import { cloneObj } from '../../services/utils'
 import { Cast } from './cast'
 import { RecipeAction } from './recipe-action'
 
@@ -32,5 +33,11 @@ export class Learn extends RecipeAction {
       '1',
       this.repeatable ? '1' : '0'
     ])
+  }
+
+  clone () {
+    const clone = cloneObj(this)
+    clone.deltas = this.deltas.clone()
+    return clone
   }
 }

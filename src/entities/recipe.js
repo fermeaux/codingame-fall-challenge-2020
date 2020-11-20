@@ -1,3 +1,5 @@
+import { cloneObj } from '../services/utils'
+
 export class Recipe {
   constructor (ingredients) {
     this.ingredients = ingredients
@@ -27,5 +29,11 @@ export class Recipe {
       if (otherIngredient > 0) return ingredient + other[index]
       return ingredient
     })
+  }
+
+  clone () {
+    const clone = cloneObj(this)
+    clone.ingredients = [...this.ingredients]
+    return clone
   }
 }
