@@ -1,5 +1,5 @@
 import { cloneObj } from '../services/utils'
-import { Rest, Wait } from './actions'
+import { Rest } from './actions'
 import { Recipe } from './recipe'
 
 export class Player {
@@ -18,11 +18,10 @@ export class Player {
 
   seekAvailableActions ({ clients, tomes }) {
     return [
-      ...this.seekAvailableCasts(),
-      ...this.seekAvailableLearns(tomes),
       ...this.seekAvailableBrews(clients),
-      ...this.seekAvailableRest(),
-      new Wait()
+      ...this.seekAvailableLearns(tomes),
+      ...this.seekAvailableCasts(),
+      ...this.seekAvailableRest()
     ]
   }
 
@@ -90,10 +89,6 @@ export class Player {
 
   hasEnoughSpace (recipe) {
     return this.inv.count() + recipe.count() <= this.inv.maxCount
-  }
-
-  getScore () {
-    return this.score + this.inv.ingredients.reduce((prev, current, index) => prev + (index > 0 ? current : 0), 0)
   }
 
   clone () {

@@ -3,6 +3,7 @@
 import { Player, Context } from '../entities'
 import { ActionFactory } from '../entities/actions'
 
+// TODO perf stocker le RootContext
 class Parser {
   parse () {
     const clients = []
@@ -20,8 +21,9 @@ class Parser {
       else console.error(`Action of type ${action.type} is not managed`)
     }
     const me = new Player(readline().split(' '), mySpells)
-    const you = new Player(readline().split(' '), yourSpells)
-    return new Context({ me, you, clients, tomes })
+    // eslint-disable-next-line no-unused-vars
+    readline().split(' ')
+    return new Context({ me, clients, tomes })
   }
 }
 

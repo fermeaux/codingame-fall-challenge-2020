@@ -1,8 +1,7 @@
 class GlobalState {
   constructor () {
+    // TODO rootContext Here
     this.turn = 0
-    this.lastPaths = []
-    this.finalPaths = []
   }
 }
 
