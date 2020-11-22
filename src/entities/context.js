@@ -11,9 +11,26 @@ export class Context {
 
   simulate () {
     this.myAction.simulate(this.me)
+    this.checkGoal()
     this.replaceClients()
     this.replaceTomes()
     this.seekPaths()
+  }
+
+  checkGoal () {
+    if (globalState.bestContext && globalState.bestContext.myAction.type === 'BREW' && this.myAction.type !== 'BREW') return
+    this.computeScore()
+    if (!globalState.bestContext ||
+        (this.myAction.type === 'BREW' && globalState.bestContext.myAction.type !== 'BREW') ||
+        this.score > globalState.bestContext.score) {
+      globalState.bestContext = this
+    }
+  }
+
+  computeScore () {
+    const scoreAction = this.myAction.computeScore(this)
+    this.score *= this.getTurnSimulated() - 1
+    this.score = scoreAction / this.getTurnSimulated()
   }
 
   replaceClients () {
@@ -71,5 +88,9 @@ export class Context {
     })
     clone.root = this.root ? this.root : clone
     return clone
+  }
+
+  getTurnSimulated () {
+    return this.root.nbTurn - 1 + this.nbTurn
   }
 }

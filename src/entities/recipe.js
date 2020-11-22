@@ -1,3 +1,5 @@
+const currencies = [1, 3, 5, 7]
+
 export class Recipe {
   constructor (ingredients) {
     this.ingredients = ingredients
@@ -33,5 +35,9 @@ export class Recipe {
     const clone = this
     clone.ingredients = [...this.ingredients]
     return clone
+  }
+
+  computeScore () {
+    return this.ingredients.reduce((prev, current, index) => prev + current * currencies[index], 0)
   }
 }

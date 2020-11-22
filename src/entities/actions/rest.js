@@ -14,4 +14,8 @@ export class Rest extends Action {
   clone () {
     return this
   }
+
+  computeScore (context) {
+    return 0.75
+  }
 }

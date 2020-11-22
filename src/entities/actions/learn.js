@@ -49,4 +49,8 @@ export class Learn extends RecipeAction {
       this.repeatable ? '1' : '0'
     ])
   }
+
+  computeScore () {
+    return this.deltas.computeScore() - 1
+  }
 }

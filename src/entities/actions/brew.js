@@ -30,4 +30,8 @@ export class Brew extends RecipeAction {
     globalState.nbClientDone++
     super.apply()
   }
+
+  computeScore (context) {
+    return 1 / context.getTurnSimulated()
+  }
 }
