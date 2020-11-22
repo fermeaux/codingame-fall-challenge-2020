@@ -1,3 +1,4 @@
+import { globalState } from '../../services/global-state'
 import { RecipeAction } from './recipe-action'
 
 export class Cast extends RecipeAction {
@@ -9,6 +10,7 @@ export class Cast extends RecipeAction {
   }
 
   apply () {
+    globalState.canRest = true
     console.error(`${this.type} ${this.id} ${this.nbTime}`)
     console.log(`${this.type} ${this.id} ${this.nbTime}`)
   }
@@ -16,6 +18,7 @@ export class Cast extends RecipeAction {
   simulate (player) {
     player.inv.substract(this.deltas.ingredients)
     player.inv.add(this.deltas.ingredients)
+    player.canRest = true
     this.castable = false
   }
 

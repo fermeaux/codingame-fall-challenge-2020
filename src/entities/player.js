@@ -1,8 +1,11 @@
+import { globalState } from '../services/global-state'
 import { Rest } from './actions'
 import { Recipe } from './recipe'
 
+const restAction = new Rest()
+
 export class Player {
-  constructor (inputs, spells, nbClientDone) {
+  constructor (inputs, spells, nbClientDone, canRest) {
     this.inv = new Recipe([
       parseInt(inputs[0]),
       parseInt(inputs[1]),
@@ -13,27 +16,31 @@ export class Player {
     this.score = parseInt(inputs[4]) // amount of rupees
     this.spells = spells
     this.nbClientDone = nbClientDone
+    this.canRest = canRest
   }
 
   seekAvailableActions ({ clients, tomes }) {
-    return [
+    const availableActions = [
       ...this.seekAvailableBrews(clients),
       ...this.seekAvailableLearns(tomes),
-      ...this.seekAvailableCasts(),
-      ...this.seekAvailableRest()
+      ...this.seekAvailableCasts()
     ]
+    if (this.canRest) availableActions.push(restAction)
+    return availableActions
   }
 
   seekAvailableCasts () {
-    return this.spells.reduce((availableCasts, spell) => {
+    const availableCasts = []
+    for (let i = 0; i < this.spells.length; i++) {
+      const spell = this.spells[i]
       let currentSpell = this.generateRepeatableCast(spell, 1)
-      for (let i = 1; currentSpell && this.canCast(currentSpell); i++) {
+      for (let j = 1; currentSpell && this.canCast(currentSpell); j++) {
         availableCasts.push(currentSpell)
-        if (currentSpell.repeatable) currentSpell = this.generateRepeatableCast(spell, i)
+        if (currentSpell.repeatable) currentSpell = this.generateRepeatableCast(spell, j)
         else currentSpell = undefined
       }
-      return availableCasts
-    }, [])
+    }
+    return availableCasts
   }
 
   canCast (spell) {
@@ -50,12 +57,7 @@ export class Player {
   }
 
   seekAvailableLearns (tomes) {
-    return tomes.reduce((availableTomes, tome) => {
-      if (this.canLearn(tome)) {
-        availableTomes.push(tome)
-      }
-      return availableTomes
-    }, [])
+    return tomes.filter(tome => this.canLearn(tome))
   }
 
   canLearn (tome) {
@@ -63,23 +65,11 @@ export class Player {
   }
 
   seekAvailableBrews (clients) {
-    return clients.reduce((availableBrews, client) => {
-      if (this.canBrew(client)) {
-        availableBrews.push(client)
-      }
-      return availableBrews
-    }, [])
+    return clients.filter(client => this.canBrew(client))
   }
 
   canBrew (client) {
     return this.hasEnoughIngredients(client.deltas.ingredients)
-  }
-
-  seekAvailableRest () {
-    for (let i = 0; i < this.spells.length; i++) {
-      if (!this.spells[i].castable) return [new Rest()]
-    }
-    return []
   }
 
   hasEnoughIngredients (ingredients) {
@@ -100,7 +90,8 @@ export class Player {
         this.score
       ],
       this.spells.map(spell => spell.clone()),
-      this.nbClientDone
+      this.nbClientDone,
+      this.canRest
     )
     return clone
   }
