@@ -1,4 +1,3 @@
-import { globalState } from '../services/global-state'
 import { Rest } from './actions'
 import { Recipe } from './recipe'
 

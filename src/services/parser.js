@@ -6,7 +6,7 @@ import { globalState } from './global-state'
 
 class Parser {
   parse () {
-    const clients = []
+    let clients = []
     const tomes = []
     const actionCount = parseInt(readline())
     const mySpells = []
@@ -20,6 +20,8 @@ class Parser {
       else if (action.type === 'LEARN') tomes.push(action)
       else console.error(`Action of type ${action.type} is not managed`)
     }
+    const newClients = clients.filter(client => client.price > 13)
+    if (newClients.length > 0) clients = newClients
     const me = new Player(readline().split(' '), mySpells, globalState.nbClientDone, globalState.canRest)
     // eslint-disable-next-line no-unused-vars
     readline().split(' ')

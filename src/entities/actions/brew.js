@@ -32,13 +32,6 @@ export class Brew extends RecipeAction {
   }
 
   computeScore (context) {
-    if (context.me.nbClientDone <= 3) {
-      return this.price * this.price
-    } else if (context.me.nbClientDone > 3) {
-      return Math.sqrt(this.price)
-    }
-    // return 1
-    // return Math.sqrt(this.price)
-    // return this.price * this.price
+    return this.price * this.price
   }
 }
