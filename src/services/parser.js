@@ -4,7 +4,6 @@ import { Player, Context } from '../entities'
 import { ActionFactory } from '../entities/actions'
 import { globalState } from './global-state'
 
-// TODO perf stocker le RootContext
 class Parser {
   parse () {
     const clients = []

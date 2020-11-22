@@ -51,6 +51,6 @@ export class Learn extends RecipeAction {
   }
 
   computeScore () {
-    return this.deltas.computeScore() - 1
+    return this.deltas.computeScore() - 1 - (this.tomeIndex + this.taxCount) * 0.5
   }
 }
