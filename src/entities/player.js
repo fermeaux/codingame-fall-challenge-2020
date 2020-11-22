@@ -1,9 +1,8 @@
-import { cloneObj } from '../services/utils'
 import { Rest } from './actions'
 import { Recipe } from './recipe'
 
 export class Player {
-  constructor (inputs, spells) {
+  constructor (inputs, spells, nbClientDone) {
     this.inv = new Recipe([
       parseInt(inputs[0]),
       parseInt(inputs[1]),
@@ -13,7 +12,7 @@ export class Player {
     this.inv.maxCount = 10
     this.score = parseInt(inputs[4]) // amount of rupees
     this.spells = spells
-    this.nbClientDone = 0
+    this.nbClientDone = nbClientDone
   }
 
   seekAvailableActions ({ clients, tomes }) {
@@ -92,9 +91,17 @@ export class Player {
   }
 
   clone () {
-    const clone = cloneObj(this)
-    clone.inv = this.inv.clone()
-    clone.spells = this.spells.map(spell => spell.clone())
+    const clone = new Player(
+      [
+        this.inv.ingredients[0],
+        this.inv.ingredients[1],
+        this.inv.ingredients[2],
+        this.inv.ingredients[3],
+        this.score
+      ],
+      this.spells.map(spell => spell.clone()),
+      this.nbClientDone
+    )
     return clone
   }
 }

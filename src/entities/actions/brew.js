@@ -1,4 +1,4 @@
-import { cloneObj } from '../../services/utils'
+import { globalState } from '../../services/global-state'
 import { RecipeAction } from './recipe-action'
 
 export class Brew extends RecipeAction {
@@ -15,8 +15,19 @@ export class Brew extends RecipeAction {
   }
 
   clone () {
-    const clone = cloneObj(this)
-    clone.deltas = this.deltas.clone()
-    return clone
+    return new Brew([
+      this.id,
+      'BREW',
+      this.deltas.get(0),
+      this.deltas.get(1),
+      this.deltas.get(2),
+      this.deltas.get(3),
+      this.price
+    ])
+  }
+
+  apply () {
+    globalState.nbClientDone++
+    super.apply()
   }
 }

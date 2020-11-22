@@ -1,14 +1,12 @@
 import { database } from '../services/database'
 import { globalState } from '../services/global-state'
-import { cloneObj } from '../services/utils'
 
 export class Context {
-  constructor ({ me, clients, tomes }) {
+  constructor ({ me, clients, tomes, nbTurn }) {
     this.me = me
     this.clients = clients
     this.tomes = tomes
-    this.nbTurn = globalState.turn
-    this.timeThreshold = this.nbTurn > 0 ? 40 : 950
+    this.nbTurn = nbTurn || globalState.turn
   }
 
   simulate () {
@@ -44,7 +42,6 @@ export class Context {
 
   seekPaths () {
     if (this.isEnd()) {
-      console.error('found end game')
       this.children = []
       return
     }
@@ -52,36 +49,27 @@ export class Context {
     this.children = myActions.map(myAction => this.cloneWithAction(myAction))
   }
 
-  cloneWithAction (myAction) {
-    const clone = this.clone()
-    clone.myAction = myAction
-    clone.parent = this
-    clone.nbTurn++
-    return clone
-  }
-
   isEnd () {
     return this.me.nbClientDone >= 6 || globalState.nbTurn === 100
   }
 
-  getRoot () {
-    let root = this
-    while (root.nbTurn > globalState.turn + 1) {
-      root = root.parent
-    }
-    return root
-  }
-
-  clone () {
-    const clone = cloneObj(this)
-    clone.me = this.me.clone()
-    clone.clients = this.clients.map(client => client.clone())
-    clone.tomes = this.tomes.map(tome => tome.clone())
+  cloneWithAction (myAction) {
+    const startDate = new Date().getTime()
+    const clone = this.clone()
+    globalState.cloneTime = globalState.cloneTime + new Date().getTime() - startDate
+    clone.myAction = myAction
+    clone.nbTurn++
     return clone
   }
 
-  toString () {
-    const root = this.getRoot()
-    return `${this.myAction.type} ${this.myAction.id} / ${root.myAction.type} ${root.myAction.id}`
+  clone () {
+    const clone = new Context({
+      me: this.me.clone(),
+      clients: this.clients,
+      tomes: this.tomes.map(tome => tome.clone()),
+      nbTurn: this.nbTurn
+    })
+    clone.root = this.root ? this.root : clone
+    return clone
   }
 }

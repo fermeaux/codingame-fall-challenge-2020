@@ -2,6 +2,7 @@
 
 import { Player, Context } from '../entities'
 import { ActionFactory } from '../entities/actions'
+import { globalState } from './global-state'
 
 // TODO perf stocker le RootContext
 class Parser {
@@ -20,7 +21,7 @@ class Parser {
       else if (action.type === 'LEARN') tomes.push(action)
       else console.error(`Action of type ${action.type} is not managed`)
     }
-    const me = new Player(readline().split(' '), mySpells)
+    const me = new Player(readline().split(' '), mySpells, globalState.nbClientDone)
     // eslint-disable-next-line no-unused-vars
     readline().split(' ')
     return new Context({ me, clients, tomes })

@@ -10,4 +10,8 @@ export class Rest extends Action {
       spell.castable = true
     })
   }
+
+  clone () {
+    return this
+  }
 }

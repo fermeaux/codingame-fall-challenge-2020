@@ -1,12 +1,11 @@
-import { cloneObj } from '../../services/utils'
 import { RecipeAction } from './recipe-action'
 
 export class Cast extends RecipeAction {
-  constructor (inputs) {
+  constructor (inputs, nbTime) {
     super(inputs)
     this.castable = inputs[9] !== '0' // in the first league: always 0; later: 1 if this is a castable player spell
     this.repeatable = inputs[10] !== '0' // for the first two leagues: always 0; later: 1 if this is a repeatable player spell
-    this.nbTime = 1
+    this.nbTime = nbTime || 1
   }
 
   apply () {
@@ -21,8 +20,18 @@ export class Cast extends RecipeAction {
   }
 
   clone () {
-    const clone = cloneObj(this)
-    clone.deltas = this.deltas.clone()
-    return clone
+    return new Cast([
+      this.id,
+      this.type,
+      this.deltas.get(0),
+      this.deltas.get(1),
+      this.deltas.get(2),
+      this.deltas.get(3),
+      null,
+      0,
+      0,
+      this.castable ? '1' : '0',
+      this.repeatable ? '1' : '0'
+    ])
   }
 }

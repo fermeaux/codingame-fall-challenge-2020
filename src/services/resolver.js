@@ -6,9 +6,10 @@ class Resolver {
     this.brewPossibilities = {}
     rootContext.seekPaths()
     const queue = [...rootContext.children]
-    const startDate = new Date()
+    const startDate = new Date().getTime()
+    const timeThreshold = globalState.turn === 0 ? 950 : 35
     let count = 0
-    while (queue.length > 0 && new Date() - startDate < rootContext.timeThreshold) {
+    while (queue.length > 0 && new Date().getTime() - startDate < timeThreshold) {
       const node = queue.shift()
       this.checkGoal(node)
       node.simulate()
@@ -16,7 +17,7 @@ class Resolver {
       count++
     }
     console.error(count)
-    console.error(this.brewPossibilities)
+    console.error(`cloneTime: ${globalState.cloneTime}`)
     this.selectAction(rootContext).apply()
   }
 
@@ -35,16 +36,15 @@ class Resolver {
       const brewPossibility = this.brewPossibilities[brewId]
       const nbTurn = Object.keys(brewPossibility)[0]
       const context = brewPossibility[nbTurn][0]
-      // eslint-disable-next-line eqeqeq
+      // eslint-disable-next-line
       const client = rootContext.clients.find(client => client.id == brewId)
-      const score = client.price / nbTurn
-      console.error(score)
+      const score = 1 / nbTurn
       if (score > bestBrew.score) {
         bestBrew.score = score
         bestBrew.ctx = context
       }
     })
-    if (bestBrew.ctx) return bestBrew.ctx.getRoot().myAction
+    if (bestBrew.ctx) return bestBrew.ctx.root.myAction
     return rootContext.children[Math.floor(Math.random() * Math.floor(rootContext.children.length))].myAction
   }
 }
