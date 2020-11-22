@@ -2,14 +2,14 @@ import { globalState } from './global-state'
 
 class Resolver {
   resolve (rootContext) {
-    this.brewPossibilities = {}
+    const startDate = new Date().getTime()
     rootContext.seekPaths()
     const queue = [...rootContext.children]
-    const startDate = new Date().getTime()
-    const timeThreshold = globalState.turn === 0 ? 950 : 35
+    const timeThreshold = globalState.turn === 0 ? 950 : 40
     let count = 0
     while (queue.length > 0 && new Date().getTime() - startDate < timeThreshold) {
-      const node = queue.shift()
+      let node = queue.shift()
+      node = node.ctx.cloneWithAction(node.action)
       node.simulate()
       queue.push(...node.children)
       count++

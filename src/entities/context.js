@@ -63,7 +63,7 @@ export class Context {
       return
     }
     const myActions = this.me.seekAvailableActions(this)
-    this.children = myActions.map(myAction => this.cloneWithAction(myAction))
+    this.children = myActions.map(myAction => ({ ctx: this, action: myAction }))
   }
 
   isEnd () {

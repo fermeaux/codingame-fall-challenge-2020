@@ -32,6 +32,6 @@ export class Brew extends RecipeAction {
   }
 
   computeScore (context) {
-    return 1 / context.getTurnSimulated()
+    return this.price / context.getTurnSimulated()
   }
 }
