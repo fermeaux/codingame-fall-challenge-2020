@@ -29,7 +29,7 @@ export class Context {
 
   computeScore () {
     const scoreAction = this.myAction.computeScore(this)
-    this.score *= this.getTurnSimulated() - 1
+    if (this.myAction.type !== 'BREW') this.score *= this.getTurnSimulated() - 1
     this.score = scoreAction / this.getTurnSimulated()
   }
 
@@ -71,9 +71,7 @@ export class Context {
   }
 
   cloneWithAction (myAction) {
-    const startDate = new Date().getTime()
     const clone = this.clone()
-    globalState.cloneTime = globalState.cloneTime + new Date().getTime() - startDate
     clone.myAction = myAction
     clone.nbTurn++
     return clone
@@ -91,6 +89,6 @@ export class Context {
   }
 
   getTurnSimulated () {
-    return this.root.nbTurn - 1 + this.nbTurn
+    return this.nbTurn - globalState.turn
   }
 }

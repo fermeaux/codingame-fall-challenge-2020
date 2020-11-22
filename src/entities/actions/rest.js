@@ -16,6 +16,6 @@ export class Rest extends Action {
   }
 
   computeScore (context) {
-    return 0.75
+    return 0.25
   }
 }

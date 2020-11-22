@@ -18,9 +18,9 @@ export class Player {
   seekAvailableActions ({ clients, tomes }) {
     return [
       ...this.seekAvailableBrews(clients),
-      ...this.seekAvailableLearns(tomes),
       ...this.seekAvailableCasts(),
-      ...this.seekAvailableRest()
+      ...this.seekAvailableRest(),
+      ...this.seekAvailableLearns(tomes)
     ]
   }
 
