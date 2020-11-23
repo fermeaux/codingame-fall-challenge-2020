@@ -10,15 +10,12 @@ class Resolver {
     }
     const queue = [...rootContext.children]
     const timeThreshold = globalState.turn === 0 ? 950 : 40
-    // let count = 0
     while (queue.length > 0 && new Date().getTime() - startDate < timeThreshold) {
       let node = queue.shift()
       node = node.ctx.cloneWithAction(node.action)
       node.simulate()
       queue.push(...node.children)
-      // count++
     }
-    // console.error(`profondeur ${queue.shift().ctx.getTurnSimulated() + 1} en ${count} vérifications`)
     globalState.bestContext.root.myAction.apply()
   }
 }
